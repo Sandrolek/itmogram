@@ -3,6 +3,8 @@ import psycopg2
 from flask_login import LoginManager
 from flask_socketio import SocketIO
 
+socketio = SocketIO()
+
 def get_db_connection():
     conn = psycopg2.connect(host='localhost',
                             database='flask_db',
@@ -11,6 +13,7 @@ def get_db_connection():
     return conn
 
 def create_app():
+
     app = Flask(__name__)
 
     app.config['SECRET_KEY'] = 'P@ssw0rd'
@@ -31,6 +34,6 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    socketio = SocketIO(app)
+    socketio.init_app(app)
 
     return app

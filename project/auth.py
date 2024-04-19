@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, session
 from flask_login import login_user, login_required, logout_user
 from .models import User
 from . import get_db_connection
@@ -16,6 +16,7 @@ def get_user(email):
 
 @auth.route('/login')
 def login():
+
     return render_template('login.html')
 
 @auth.route('/login', methods=['POST'])
@@ -27,8 +28,6 @@ def login_post():
 
     users = get_user(email)  # (id, email, name, password)
 
-    print(users)
-
     if len(users) == 0 or not (users[0][3] == password):
         flash('Please check your login details and try again.')
         return redirect(url_for('auth.login'))
@@ -38,7 +37,14 @@ def login_post():
     user_obj = User(user[0])
 
     login_user(user_obj, remember=remember)
-    print(f"{user[2]} {remember}")
+    # print(f"{user[2]} {remember}")
+
+    next_url = request.form.get("next")
+
+    # session["username"] = username
+    if next_url:
+        return redirect(next_url)
+    # return redirect(url_for("profile"))
 
     return redirect(url_for('main.profile'))
 
