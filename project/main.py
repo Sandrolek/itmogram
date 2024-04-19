@@ -129,6 +129,19 @@ def rooms():
         return render_template('rooms.html')
 
 
+def delete_messages(room_code):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute(f"select id from public.rooms where name='{room_code}';")
+    room_id = cur.fetchall()[0][0]
+
+    cur.execute(f"delete from public.messages where room_id={room_id};")
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
 def get_messages(room_code):
     conn = get_db_connection()
     cur = conn.cursor()
@@ -157,13 +170,22 @@ def get_messages(room_code):
     return result
     # print(f"added message {text} from {user_name}/{user_id} into {room_code}/{room_id} to db")
 
-@main.route('/room')
+@main.route('/room', methods=['GET', 'POST'])
 @login_required
 def room():
+
     name = session.get('name')
     room = session.get('room_code')
     if name is None or room is None or room not in get_codes():
         return redirect(url_for('main.rooms'))
+
+    if request.method == "POST":
+        # print("posted delete from room")
+        # print(type(request.form.get("delete")))
+        # print(request.form.get("delete"))
+        if request.form.get("delete", False) is not False:
+            delete_messages(room_code=room)
+
     messages = get_messages(room_code=room)
     # messages = chat_rooms[room]['messages']
     return render_template('room.html', room=room, user=name, messages=messages)

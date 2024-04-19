@@ -4,7 +4,7 @@
         <h1 id="home-header">Chat 💬</h1>
         <div id="room-subsection">
             <h2 id="room-code-display">Room Code: <span>{{ room }}</span></h2>
-            <a href="/" id="leave-chat-btn">Leave the Chat</a>
+            <a href="/rooms" id="leave-chat-btn">Leave the Chat</a>
         </div>
         <div id="chat-room-widget">
             <div id="msgs-container">
@@ -14,7 +14,12 @@
                 <input type="text" placeholder="Enter your message" id="message-input" name="message"/>
                 <button type="submit" id="send-btn" onclick="sendMessage()">Send</button>
             </div>
+            <form method="post" id="chat-delete-button">
+                <hr/>
+                <button type="submit" id="delete" name="delete">Delete chat history</button>
+            </form>
         </div>
+
         <script type="text/javascript">
             var socketio = io();
             socketio.on("message", function (message) {
