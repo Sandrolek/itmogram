@@ -19,7 +19,6 @@
                 <button type="submit" id="delete" name="delete">Delete chat history</button>
             </form>
         </div>
-
         <script type="text/javascript">
             var socketio = io();
             socketio.on("message", function (message) {
@@ -33,11 +32,11 @@
                 } else {
                     var senderIsUser = "{{user}}" === sender;
                     var content = `
-          <li class="message-item ${senderIsUser ? "self-message-item" : "peer-message-item"}">
-              <p>${sender}: ${message}</p>
-              <small class="${senderIsUser ? "muted-text" : "muted-text-white"}">${new Date().toLocaleString()}</small>
-          </li>
-      `;
+                        <li class="message-item ${senderIsUser ? "self-message-item" : "peer-message-item"}">
+                            <p>${sender}: ${message}</p>
+                            <small class="${senderIsUser ? "muted-text" : "muted-text-white"}">${new Date().toLocaleString()}</small>
+                        </li>
+                    `;
                 }
                 messages.innerHTML += content;
             }
@@ -47,13 +46,14 @@
                 if (msgInput.value === "") return;
                 var msg = msgInput.value;
                 socketio.emit("message", {message: msg});
+                socketio.
                 msgInput.value = "";
             }
         </script>
         {% for message in messages %}
-            <script type="text/javascript">
-                createChatItem("{{message.message}}", "{{message.sender}}");
-            </script>
+        <script type="text/javascript">
+            createChatItem("{{message.message}}", "{{message.sender}}");
+        </script>
         {% endfor %}
     </div>
 {% endblock %}

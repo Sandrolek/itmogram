@@ -1,20 +1,64 @@
 {% extends 'base.html' %} {% block content %}
 
 
-    <div id="home-container">
+{#    <div id="home-container">#}
+{#        <h1 id="home-header">Chat 💬</h1>#}
+{#        {% if error %}#}
+{#            <p id="error">{{ error }}</p>#}
+{#        {% endif %}#}
+{##}
+{#        <form method="post" id="chat-widget-home">#}
+{#            <div>#}
+{#                <label for="code" id="code-label">Enter chat room code</label>#}
+{#                <input type="text" id="code" name="code" placeholder="Enter code" value="{{ code }}"/>#}
+{#                <button type="submit" id="join" name="join">Join</button>#}
+{#            </div>#}
+{#            <hr/>#}
+{#            <button type="submit" id="create" name="create">Create Room</button>#}
+{#        </form>#}
+{#    </div>#}
+{#    <div id="room-list">#}
+{#        <table>#}
+{#            <thead>#}
+{#                <tr>#}
+{#                    <th>Room Code</th>#}
+{#                </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#                {% for room in rooms %}#}
+{#                    <tr>#}
+{#                        <td><a href="{{ url_for('main.room', room_code=room['room_code']) }}">{{ room['room_code'] }}</a></td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#            </tbody>#}
+{#        </table>#}
+{#    </div>#}
+    <div id="room-container">
         <h1 id="home-header">Chat 💬</h1>
         {% if error %}
             <p id="error">{{ error }}</p>
         {% endif %}
 
         <form method="post" id="chat-widget-home">
-            <div>
+            <div id="code-input-container">
                 <label for="code" id="code-label">Enter chat room code</label>
                 <input type="text" id="code" name="code" placeholder="Enter code" value="{{ code }}"/>
                 <button type="submit" id="join" name="join">Join</button>
             </div>
-            <hr/>
+            <hr id="separator"/>
             <button type="submit" id="create" name="create">Create Room</button>
         </form>
+    </div>
+    <div id="room-list">
+        <h2 id="room-list-header">Available Rooms</h2>
+        <ul id="room-ul">
+            {% for room in rooms %}
+                <li id="room-{{ room['room_code'] }}" class="room-item">
+                    <a href="{{ url_for('main.room', room_code=room['room_code']) }}" class="room-link">{{ room['room_code'] }}</a>
+                    <p class="room-description">{{ room['description'] }}</p>
+                    <span class="room-timestamp">{{ room['timestamp'] }}</span>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}

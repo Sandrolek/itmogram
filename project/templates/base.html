@@ -8,6 +8,8 @@
     <title>ITMOgram</title>
 {#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />#}
 {#    <link rel="stylesheet" href="{{url_for('static', filename='styles/styles.css')}}" />#}
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/test_style.css')}}" />
+{#    <link rel="stylesheet" href="{{url_for('static', filename='styles/test_styles1.css')}}" />#}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
 </head>
 
@@ -19,9 +21,9 @@
                 <div class="container">
                     <div id="navbarMenuHeroA" class="navbar-menu">
                         <div class="navbar-end">
-                            <a href="{{ url_for('main.index') }}" class="navbar-item">
-                                Home
-                            </a>
+{#                            <a href="{{ url_for('main.index') }}" class="navbar-item">#}
+{#                                Home#}
+{#                            </a>#}
                             <a href="{{ url_for('main.profile') }}" class="navbar-item">
                                 Profile
                             </a>

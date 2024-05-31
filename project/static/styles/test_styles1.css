@@ -1,0 +1,139 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+#home-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+#home-header {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#error {
+    color: red;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#chat-widget-home {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#code-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#code-label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+#code {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#join {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#join:hover {
+    background-color: #0056b3;
+}
+
+#separator {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+#create {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#create:hover {
+    background-color: #218838;
+}
+
+#room-list {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+#room-list-header {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#room-ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.room-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.room-item:last-child {
+    border-bottom: none;
+}
+
+.room-link {
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.room-link:hover {
+    text-decoration: underline;
+}
+
+.room-description {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.room-timestamp {
+    font-size: 12px;
+    color: #999;
+}
