@@ -1,8 +1,5 @@
 import psycopg2
-from flask import Blueprint, render_template, redirect, url_for, request
-from werkzeug.security import generate_password_hash, check_password_hash
-
-
+import hashlib
 def get_db_connection():
     conn = psycopg2.connect(host='localhost',
                             database='flask_db',
@@ -19,5 +16,22 @@ def check_user(email):
     conn.close()
     return user
 
-print(check_user("aa@aaa.com"))
-print(type(check_user("aa@aaa.com")))
+# init_db()
+
+password = "123"
+m = hashlib.sha256()
+num = str("P@ssw0rd")
+m.update(num.encode('utf8'))
+code = m.hexdigest()
+
+print(code)
+
+password2 = "P@ssw0rd"
+m = hashlib.sha256()
+num = str(password2)
+m.update(num.encode('utf8'))
+code = m.hexdigest()
+
+print(code)
+
+# print(get_rooms())

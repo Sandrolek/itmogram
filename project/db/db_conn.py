@@ -1,12 +1,37 @@
-from . import get_db_connection
+import json
+import psycopg2
+import hashlib
+
+def get_db_connection():
+    with open("db_conf.json") as conf_file:
+        config = json.load(conf_file)
+
+    host =      config["host"]
+    database =  config["database"]
+    user =      config["user"]
+    password =  config["password"]
+
+    connection = psycopg2.connect(
+        host=host,
+        database=database,
+        user=user,
+        password=password
+    )
+
+    return connection
+
 
 def add_user(email, name, password):
     conn = get_db_connection()
     cur = conn.cursor()
+    m = hashlib.sha256()
+    num = str(password)
+    m.update(num.encode('utf8'))
+    code = m.hexdigest()
     cur.execute('INSERT INTO public.users (email, password, name)'
                 'VALUES (%s, %s, %s)',
                 (f"{email}",
-                 f"{password}",
+                 f"{code}",
                  f"{name}")
                 )
 
@@ -35,30 +60,41 @@ def get_user_name(id):
 
     return user_id[0][0]
 
-def add_room(code):
+def add_room(name, code):
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute(f"insert into public.rooms (name) values ('{code}');")
+    cur.execute(f"insert into public.rooms (name, code) values ('{name}', '{code}');")
     conn.commit()
     cur.close()
     conn.close()
     print(f"added room with code {code} to db")
 
-def get_rooms_codes():
+def get_rooms():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute(f"select (name) from public.rooms;")
-    codes = cur.fetchall()
+    cur.execute(f"select name, code from public.rooms;")
+    rooms = cur.fetchall()
     cur.close()
     conn.close()
 
-    return [code[0] for code in codes]
+    return [{"name": room[0], "code": room[1]} for room in rooms]
+
+def get_room_name(room_code):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(f"select name from public.rooms where code='{room_code}';")
+    room_name = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    return room_name[0][0]
+
 
 def add_message(text="", user_id="", room_code=""):
     conn = get_db_connection()
     cur = conn.cursor()
 
-    cur.execute(f"select id from public.rooms where name='{room_code}';")
+    cur.execute(f"select id from public.rooms where code='{room_code}';")
     room_id = cur.fetchall()[0][0]
 
     user_name = get_user_name(user_id)
@@ -67,13 +103,13 @@ def add_message(text="", user_id="", room_code=""):
     conn.commit()
     cur.close()
     conn.close()
-    print(f"added message {text} from {user_name}/{user_id} into {room_code}/{room_id} to db")
+    print(f"added message {text} from {user_name}/{user_id} into {room_code} to db")
 
 def delete_messages(room_code):
     conn = get_db_connection()
     cur = conn.cursor()
 
-    cur.execute(f"select id from public.rooms where name='{room_code}';")
+    cur.execute(f"select id from public.rooms where code='{room_code}';")
     room_id = cur.fetchall()[0][0]
 
     cur.execute(f"delete from public.messages where room_id={room_id};")
@@ -86,7 +122,7 @@ def get_messages(room_code):
     conn = get_db_connection()
     cur = conn.cursor()
 
-    cur.execute(f"select id from public.rooms where name='{room_code}';")
+    cur.execute(f"select id from public.rooms where code='{room_code}';")
     room_id = cur.fetchall()[0][0]
 
     cur.execute(f"select user_from_id, text from public.messages m where m.room_id={room_id};")

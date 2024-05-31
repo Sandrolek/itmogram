@@ -1,2 +1,4 @@
 venv
 .idea
+db_conf.json
+project/check.py

@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, session
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, login_required, logout_user
 from .models import User
-from .db_conn import get_user, add_user
+from project.db.db_conn import get_user, add_user
+import hashlib
 
 auth = Blueprint('auth', __name__)
 
@@ -19,7 +20,16 @@ def login_post():
 
     users = get_user(email)  # (id, email, name, password)
 
-    if len(users) == 0 or not (users[0][3] == password):
+    user_pass_hash = users[0][3]
+    m = hashlib.sha256()
+    num = str(password)
+    m.update(num.encode('utf8'))
+    code = m.hexdigest()
+
+    print(code)
+    print(user_pass_hash)
+
+    if len(users) == 0 or not (code == user_pass_hash):
         flash('Please check your login details and try again.')
         return redirect(url_for('auth.login'))
     
@@ -61,5 +71,5 @@ def signup_post():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('main.index'))
+    return redirect(url_for('auth.login'))
 

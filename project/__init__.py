@@ -1,16 +1,9 @@
 from flask import Flask
-import psycopg2
 from flask_login import LoginManager
 from flask_socketio import SocketIO
+from .models import User
 
 socketio = SocketIO()
-
-def get_db_connection():
-    conn = psycopg2.connect(host='localhost',
-                            database='flask_db',
-                            user="flask_admin",
-                            password="P@ssw0rd")
-    return conn
 
 def create_app():
 
@@ -21,8 +14,6 @@ def create_app():
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
-
-    from .models import User
 
     @login_manager.user_loader
     def load_user(user_id):
